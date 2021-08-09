@@ -117,7 +117,7 @@ aliasKubectl() {
 
 initMaster() {
     sudo su 
-    kubeadm init --apiserver-advertise-address 192.168.33.13 --pod-network-cidr=10.244.0.0/16
+    kubeadm init --apiserver-advertise-address 192.168.33.13 --pod-network-cidr=10.244.0.0/16 --cri-socket /run/containerd/containerd.sock 
     
     # https://stackoverflow.com/questions/64296491/how-to-resolve-scheduler-and-controller-manager-unhealthy-state-in-kubernetes
     # kubectl get cs / kubectl get componentstatuses

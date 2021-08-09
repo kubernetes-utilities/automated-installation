@@ -18,7 +18,11 @@ Vagrant.configure("2") do |config|
     
     config.vm.network "forwarded_port", id:"SSH",
       guest_ip: "192.168.33.13", guest: 22, 
-      host_ip: "192.168.1.73", host: 3313
+      host_ip: "192.168.1.100", host: 3313
+    
+    config.vm.network "forwarded_port", id:"cluster",
+      guest_ip: "192.168.33.13", guest: 6443, 
+      host_ip: "192.168.1.100", host: 6443
       
     # config.vm.provision:shell, inline: <<-SHELL
     #     sudo su
