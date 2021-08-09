@@ -4,16 +4,16 @@
 Vagrant.configure("2") do |config|
 
   config.vm.box = "generic/ubuntu2004"
-  
-  config.vm.define "b50-admin" do | m |
-    m.vm.hostname = "b50-admin"
+
+  config.vm.define "admin" do | m |
+    m.vm.hostname = "admin"
     
     m.vm.network "private_network", ip: "192.168.33.13"
     
     m.vm.provider "virtualbox" do |vb|
       vb.memory = "4096"
       vb.cpus = 2
-      vb.name = "b50-admin"
+      vb.name = "admin"
     end
     
     config.vm.network "forwarded_port", id:"SSH",

@@ -3,7 +3,7 @@
 #set -Eeuo pipefail
 #trap cleanup SIGINT SIGTERM ERR EXIT
 
-installVirtualbox(){
+installVirtualbox() {
     sudo apt update -y 
     sudo apt install -y virtualbox
     mkdir $HOME/virtualbox 
@@ -28,13 +28,13 @@ resolveDNS() {
 
 addHosts() {
     sudo sed -e '/^.*ubuntu2004.*/d' -i /etc/hosts
-    sudo sed -e '/^.*hp-admin*/d' -i /etc/hosts
+    sudo sed -e '/^.*admin*/d' -i /etc/hosts
 
     # Update /etc/hosts about other hosts
 sudo cat >> /etc/hosts <<EOF
 
 # Add hosts
-192.168.33.13 hp-admin
+192.168.33.13 admin
 192.168.33.14 worker-1
 192.168.33.15 worker-2
 EOF
@@ -129,13 +129,13 @@ initMaster() {
 }
 
 addAdminConfig() {
-    mkdir -p /home/vagrant/.kube
-    sudo cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
-    sudo chown vagrant:vagrant /home/vagrant/.kube/config
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
 }
 
 installFlannel(){
-    sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 }
 
 main() {
