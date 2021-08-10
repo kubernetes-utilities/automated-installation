@@ -318,7 +318,7 @@ nc -vz 192.168.33.13 6443
 - **https://github.com/mbaykara/k8s-cluster/blob/main/k8s-setup-master.sh**
 - https://vitalflux.com/kubernetes-create-delete-namespaces-namespaces
 - https://www.learnsteps.com/how-exactly-kube-proxy-works-basics-on-kubernetes
-- https://stackoverflow.com/questions/39293441/needed-ports-for-kubernetes-cluster
+- **https://stackoverflow.com/questions/39293441/needed-ports-for-kubernetes-cluster**
 - https://www.tecmint.com/find-open-ports-in-linux
 - **https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/index.html**
 
