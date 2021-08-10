@@ -318,6 +318,14 @@ nc -vz 192.168.33.13 6443
 - **https://github.com/mbaykara/k8s-cluster/blob/main/k8s-setup-master.sh**
 - https://vitalflux.com/kubernetes-create-delete-namespaces-namespaces
 - https://www.learnsteps.com/how-exactly-kube-proxy-works-basics-on-kubernetes
+- https://stackoverflow.com/questions/39293441/needed-ports-for-kubernetes-cluster
+- https://www.tecmint.com/find-open-ports-in-linux
+- **https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/index.html**
+
+L   inux Ports
+0-1023 – the Well Known Ports, also referred to as System Ports.
+1024-49151 – the Registered Ports, also known as User Ports.
+49152-65535 – the Dynamic Ports, also referred to as the Private Ports.
 
 
 Untainting the Master Node
@@ -329,3 +337,18 @@ Kube-proxy is making configurations so that packets can reach their destination 
 Kubelet is an agent or program which runs on each node. This is responsible for all the communications between the Kubernetes control plane [group of programs which control kubernetes] and the nodes where the actual workload runs. Kubelet is like a captain of nodes and everything that needs to be executed on a node has to be done through kubelet. 
 
 etcd is distributed key-value store and it is strongly consistent. etcd works on the concept of leader and slaves. In most of cases it has 3 or 5 nodes for the quorum. It uses raft protocol for leader election. Only one node at a time is serving read and write in the etcd cluster. etcd acts as a backend to Kubernetes. Everything you create or make changes to is stored as a key-value in etcd. It is like a database of all the states of Kubernetes. If you have launched a Kubernetes with the same etcd backup, you will end up in almost the same state as it was before.
+
+
+# Ports
+Control-plane node(s)
+Protocol 	Direction 	Port Range 	Purpose 	Used By
+TCP 	Inbound 	6443* 	Kubernetes API server 	All
+TCP 	Inbound 	2379-2380 	etcd server client API 	kube-apiserver, etcd
+TCP 	Inbound 	10250 	kubelet API 	Self, Control plane
+TCP 	Inbound 	10251 	kube-scheduler 	Self
+TCP 	Inbound 	10252 	kube-controller-manager 	Self
+
+Worker node(s)
+Protocol 	Direction 	Port Range 	Purpose 	Used By
+TCP 	Inbound 	10250 	kubelet API 	Self, Control plane
+TCP 	Inbound 	30000-32767 	NodePort Services† 	All

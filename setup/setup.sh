@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-swapoff -a
+sudo swapoff -a
 sduo rm -f /etc/resolv.conf
 sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 sudo sed -i -e 's/#DNS=/DNS=8.8.8.8/' /etc/systemd/resolved.conf
