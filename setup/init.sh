@@ -13,7 +13,8 @@ modprobe br_netfilter
 service systemd-resolved restart
 kubeadm init --apiserver-advertise-address \
     192.168.33.13 --pod-network-cidr=10.244.0.0/16 \
-    --cri-socket /run/containerd/containerd.sock 
+    --cri-socket /run/containerd/containerd.sock \
+    --apiserver-cert-extra-sans=10.96.0.1,192.168.33.13,192.168.1.100
 export KUBECONFIG=/etc/kubernetes/admin.conf
 sed -e '/    - --port=0/d' -i /etc/kubernetes/manifests/kube-controller-manager.yaml
 sed -e '/    - --port=0/d' -i /etc/kubernetes/manifests/kube-scheduler.yaml
