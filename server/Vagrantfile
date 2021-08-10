@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2004"
+  config.vm.define "server" do |m|
+    m.vm.hostname = "server"
+    m.vm.network "private_network", ip: "192.168.33.13"
+    m.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+      vb.cpus = 2
+      vb.name = "server"
+    end
+    config.vm.network "forwarded_port", id:"remote-ssh",
+      guest_ip: "192.168.33.13", guest: 22,
+      host_ip: "192.168.1.73", host: 3313
+    config.vm.network "forwarded_port", id:"cluster",
+      guest_ip: "192.168.33.13", guest: 6443,
+      host_ip: "192.168.1.100", host: 6443
+    config.vm.provision "shell" do |s|    
+            s.path = "../setup/setup.sh"
+            s.args = ["master"]  
+    end
+  end
+end
