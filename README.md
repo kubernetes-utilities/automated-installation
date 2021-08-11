@@ -1,9 +1,12 @@
-# automated-installation
-Automate K8s installation in Ubuntu using Ansible and Vagrant in Ubuntu Virtualbox.
+# Automate Kubernetes Cluster
 
+This is a home infastructure setup attempt.
+
+The main objective is to automate Kubernetes cluster creation process. The nodes run Virtualbox in different hosts in the same network.
+
+All the process, installation to destruction needs to be automated. And the process is automate K8s installation in Ubuntu using Ansible and Vagrant in Ubuntu Virtualbox.
 
 ## Issue
-
 ### Worker Node Unable To Join The Cluster
 The first attempt to join failed. So I added args `--apiserver-cert-extra-sans`
 
@@ -321,25 +324,31 @@ nc -vz 192.168.33.13 6443
 - **https://stackoverflow.com/questions/39293441/needed-ports-for-kubernetes-cluster**
 - https://www.tecmint.com/find-open-ports-in-linux
 - **https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/index.html**
-
-L   inux Ports
-0-1023 – the Well Known Ports, also referred to as System Ports.
-1024-49151 – the Registered Ports, also known as User Ports.
-49152-65535 – the Dynamic Ports, also referred to as the Private Ports.
+- https://rudimartinsen.com/2020/08/08/setting-up-a-kubernetes-cluster-vms/
 
 
 Untainting the Master Node
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
 # Note
+
+## Kube-proxy
 Kube-proxy is making configurations so that packets can reach their destination when you call a service and not routing the packets. Kube-proxy creates iptables rules for the services that are created. Kube proxy runs on each node and talks to api-server to get the details of the services and endpoints present. Based on this information, kube-proxy creates entries in iptables, which then routes the packets to the correct destination. 
 
-Kubelet is an agent or program which runs on each node. This is responsible for all the communications between the Kubernetes control plane [group of programs which control kubernetes] and the nodes where the actual workload runs. Kubelet is like a captain of nodes and everything that needs to be executed on a node has to be done through kubelet. 
+## Kubelet
+Kubelet is an agent or program which runs on each node. This is responsible for all the communications between the Kubernetes control plane [group of programs which control kubernetes] and the nodes where the actual workload runs. Kubelet is like a captain of 
+nodes and everything that needs to be executed on a node has to be done through kubelet. 
 
+## etcd
 etcd is distributed key-value store and it is strongly consistent. etcd works on the concept of leader and slaves. In most of cases it has 3 or 5 nodes for the quorum. It uses raft protocol for leader election. Only one node at a time is serving read and write in the etcd cluster. etcd acts as a backend to Kubernetes. Everything you create or make changes to is stored as a key-value in etcd. It is like a database of all the states of Kubernetes. If you have launched a Kubernetes with the same etcd backup, you will end up in almost the same state as it was before.
 
 
-# Ports
+## Linux Ports
+0-1023 – the Well Known Ports, also referred to as System Ports.
+1024-49151 – the Registered Ports, also known as User Ports.
+49152-65535 – the Dynamic Ports, also referred to as the Private Ports.
+
+## Kubernetes Ports
 Control-plane node(s)
 Protocol 	Direction 	Port Range 	Purpose 	Used By
 TCP 	Inbound 	6443* 	Kubernetes API server 	All
@@ -352,3 +361,15 @@ Worker node(s)
 Protocol 	Direction 	Port Range 	Purpose 	Used By
 TCP 	Inbound 	10250 	kubelet API 	Self, Control plane
 TCP 	Inbound 	30000-32767 	NodePort Services† 	All
+
+
+# Conclusion
+Running Kubernetes cluster in different nodes in Virtualbox did not work out as expected.
+
+The problem that I was unable to solve was let a node running in a different host join the cluster running in different host. Both the hosts are in the same network. Therefore, the problem was with the networking.
+
+The better way to move ahead would be understanding networking, Container networking and Kubernetes networking.
+
+
+# TODO
+- [ ] setup/setup.sh used to contain all the installation script. The scripts are in utils folder which is a git submodule. The installation scripts needs to be added in the Vagrant files as necessary.

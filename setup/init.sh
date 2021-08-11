@@ -1,16 +1,17 @@
 #!/bin/sh
 set -e
-sudo su
-cat <<EOF | tee /etc/sysctl.d/k8s.conf
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-iptables = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 EOF
-sysctl -w net.ipv4.ip_forward=1
-sysctl net.bridge.bridge-nf-call-iptables=1
-sysctl --system
-modprobe overlay
-modprobe br_netfilter
-service systemd-resolved restart
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+sudo sysctl --system
+sudo modprobe overlay
+sudo modprobe br_netfilter
+sudo service systemd-resolved restart
+
+sudo -s <<EOF
 kubeadm init --apiserver-advertise-address \
     192.168.33.13 --pod-network-cidr=10.244.0.0/16 \
     --cri-socket /run/containerd/containerd.sock \
@@ -20,7 +21,7 @@ sed -e '/    - --port=0/d' -i /etc/kubernetes/manifests/kube-controller-manager.
 sed -e '/    - --port=0/d' -i /etc/kubernetes/manifests/kube-scheduler.yaml
 systemctl restart kubelet
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
+EOF
 
 # Non-root user config
 # user_config() {
