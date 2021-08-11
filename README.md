@@ -373,3 +373,6 @@ The better way to move ahead would be understanding networking, Container networ
 
 # TODO
 - [ ] setup/setup.sh used to contain all the installation script. The scripts are in utils folder which is a git submodule. The installation scripts needs to be added in the Vagrant files as necessary.
+
+# Git Submodule
+The Git project has a submodule `utils` so clone the project with `git clone --recurse-submodules git@github.com:kubernetes-utilities/vagrant-virtualbox-k8s.git` 
